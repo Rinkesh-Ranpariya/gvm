@@ -46,10 +46,7 @@ const BaseTable = ({ columns, data, id }) => {
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="!text-center !border-none"
-                >
+                <TableCell colSpan={columns.length} className="!text-center">
                   No Data Available !
                 </TableCell>
               </TableRow>

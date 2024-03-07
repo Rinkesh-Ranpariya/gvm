@@ -10,10 +10,7 @@ const FixedRow = ({ columns, item }) => {
     <>
       <TableRow {...rowProps}>
         {columns.map((column, index) => (
-          <TableCell
-            key={column.field || index}
-            className="!text-center !border-none"
-          >
+          <TableCell key={column.field || index} className="!text-center">
             {column.field
               ? get(item, column.field) ?? "--"
               : column.renderCell && column.renderCell(item)}

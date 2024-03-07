@@ -1,37 +1,40 @@
 import { useEffect, useState } from "react";
-import BaseTable from "./common/BaseTable";
+import BaseTable from "../common/BaseTable";
 import { Button } from "@mui/material";
 import EditProduct from "./EditProduct";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteProduct,
-  getProductsByUser,
-} from "../store/productsManagement/productsManagementSlice";
+  getProductsBySellerId,
+} from "../../store/productsManagement/productsManagementSlice";
 
 const SellerProducts = () => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const [editProduct, setEditProduct] = useState({});
-
-  const handleClose = () => {
-    setOpen(false);
-    dispatch(getProductsByUser());
-    setEditProduct("");
-  };
 
   const products = useSelector(
     (state) => state.productsManagement.userProducts
   );
 
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
+
   useEffect(() => {
-    dispatch(getProductsByUser());
+    dispatch(getProductsBySellerId(userInfo.userId));
   }, []);
 
-  const handleDeleteProduct = (id) => {
-    dispatch(deleteProduct(id));
-    dispatch(getProductsByUser());
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => {
+    setOpen(false);
+    dispatch(getProductsBySellerId(userInfo.userId));
+    setEditProduct("");
+  };
+
+  const handleDeleteProduct = (productId) => {
+    dispatch(deleteProduct(productId));
+    dispatch(getProductsBySellerId(userInfo.userId));
   };
 
   const handleEditProduct = (item) => {
@@ -43,6 +46,7 @@ const SellerProducts = () => {
     { title: "Name", field: "name" },
     { title: "Desc", field: "desc" },
     { title: "Price", field: "price" },
+    { title: "Category", field: "category" },
     {
       title: "Action",
       renderCell: (item) => (
@@ -53,7 +57,7 @@ const SellerProducts = () => {
           >
             Delete
           </Button>
-          <span className="ml-2">
+          <span className="m-2">
             <Button variant="contained" onClick={() => handleEditProduct(item)}>
               Edit
             </Button>
@@ -65,9 +69,12 @@ const SellerProducts = () => {
 
   return (
     <div className="">
-      <Button variant="contained" onClick={handleOpen}>
-        Add product
-      </Button>
+      <div className="flex justify-end mb-7">
+        <Button variant="contained" onClick={handleOpen}>
+          Add product
+        </Button>
+      </div>
+
       <BaseTable columns={columns} data={products} />
 
       {open && (

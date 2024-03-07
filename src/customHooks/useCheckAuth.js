@@ -18,7 +18,7 @@ const useCheckAuth = () => {
     const token = localStorage.getItem("userToken");
     if (token) {
       const { payload: isUserExist } = dispatch(
-        loginWithToken({ role: location.state?.role, token, allUsers })
+        loginWithToken({ token, allUsers })
       );
 
       if (isUserExist) {

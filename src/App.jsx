@@ -1,66 +1,36 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import PageNotFound from "./components/PageNotFound";
-import SellerProducts from "./components/SellerProducts";
-import RequireSellerAuth from "./components/common/RequireSellerAuth";
-import RequireCustomerAuth from "./components/common/RequireCustomerAuth";
-import Products from "./components/Products";
-import Cart from "./components/Cart";
-import Analytics from "./components/Analytics";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <RequireCustomerAuth>
-        <Products />
-      </RequireCustomerAuth>
-    ),
-  },
-  {
-    path: "/cart",
-    element: (
-      <RequireCustomerAuth>
-        <Cart />
-      </RequireCustomerAuth>
-    ),
-  },
-  {
-    path: "/seller/products",
-    element: (
-      <RequireSellerAuth>
-        <SellerProducts />
-      </RequireSellerAuth>
-    ),
-  },
-  {
-    path: "/analytics",
-    element: (
-      <RequireSellerAuth>
-        <Analytics />
-      </RequireSellerAuth>
-    ),
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Signup />,
-  },
-  {
-    path: "*",
-    element: <PageNotFound />,
-  },
-]);
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { commonRoutes, customerRoutes, sellerRoutes } from "./routes/routes";
+import { loginWithToken } from "./store/user/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
+  const [router, setRouter] = useState(commonRoutes);
+
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
+  const allUsers = useSelector((state) => state.usersManagement.allUsers);
+
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      dispatch(loginWithToken({ token, allUsers }));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo.role === "customer") {
+      setRouter(customerRoutes);
+    } else {
+      setRouter(sellerRoutes);
+    }
+  }, [userInfo.userId]);
+
   return (
     <div>
-      <RouterProvider router={router} />
+      <RouterProvider router={createBrowserRouter(router)} />
       <ToastContainer
         position="top-right"
         autoClose={3000}

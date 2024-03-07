@@ -7,6 +7,8 @@ const initialState = {
     name: "",
     contactNumber: "",
     password: "",
+    role: "",
+    userId: "",
   },
 };
 
@@ -27,15 +29,14 @@ export const userSlice = createSlice({
       }
     },
     loginWithToken: (state, action) => {
-      const { role, token, allUsers } = action.payload;
-      const userData = allUsers.find(
-        (user) => user.email === token && user.role === role
-      );
+      const { token, allUsers } = action.payload;
+      const userData = allUsers.find((user) => user.email === token);
       if (userData) {
         state.isAuthenticated = true;
         state.userInfo = userData;
         action.payload = true;
       } else {
+        state = initialState;
         localStorage.removeItem("userToken");
         action.payload = false;
       }

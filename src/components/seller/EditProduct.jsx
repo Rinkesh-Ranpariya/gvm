@@ -1,13 +1,14 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Button, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addProduct,
   editProduct,
-} from "../store/productsManagement/productsManagementSlice";
+} from "../../store/productsManagement/productsManagementSlice";
 
 const style = {
   position: "absolute",
@@ -24,16 +25,19 @@ const style = {
 const EditProduct = ({ handleClose, editProductData }) => {
   const dispatch = useDispatch();
 
-  const [product, setProduct] = React.useState({
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
+
+  const [product, setProduct] = useState({
     name: "",
     img: "",
     desc: "",
     price: 0,
-    userId: localStorage.getItem("userToken"),
-    productId: `prod-${new Date().toLocaleString()}`,
+    category: "",
+    userId: userInfo.userId,
+    productId: `productId-${uuidv4()}`,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (editProductData.productId) {
       setProduct({ ...editProductData });
     }
@@ -48,7 +52,7 @@ const EditProduct = ({ handleClose, editProductData }) => {
     handleClose();
   };
 
-  const handleChangeProduct = (e) => {
+  const handleChangeProductData = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
@@ -62,67 +66,95 @@ const EditProduct = ({ handleClose, editProductData }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Product
+            {editProductData.productId ? "Edit Product" : "Add Product"}
           </Typography>
 
-          <div className="my-3">
+          <div className="my-4">
+            <div className="mb-1 text-sm">Enter name</div>
             <TextField
               size="small"
               className="mb-3 w-full"
               name="name"
               type="text"
               id="name"
-              label="Name"
               variant="outlined"
-              onChange={handleChangeProduct}
+              onChange={handleChangeProductData}
               value={product.name}
             />
           </div>
+
           <div className="my-3">
+            <div className="mb-1 text-sm">Enter image url</div>
             <TextField
               size="small"
               className="mb-3 w-full"
               name="img"
               type="text"
               id="img"
-              label="Image"
               variant="outlined"
               value={product.img}
-              onChange={handleChangeProduct}
+              onChange={handleChangeProductData}
             />
           </div>
+
           <div className="my-3">
+            <div className="mb-1 text-sm">Enter description</div>
             <TextField
               size="small"
               className="mb-3 w-full"
               name="desc"
               type="text"
               id="desc"
-              label="Desc"
               variant="outlined"
               value={product.desc}
-              onChange={handleChangeProduct}
+              onChange={handleChangeProductData}
             />
           </div>
+
           <div className="my-3">
+            <div className="mb-1 text-sm">Enter category</div>
+            <Select
+              size="small"
+              className="mb-3 w-full"
+              id="category"
+              name="category"
+              variant="outlined"
+              value={product.category}
+              onChange={handleChangeProductData}
+            >
+              <MenuItem value="Fashion">Fashion</MenuItem>
+              <MenuItem value="Food and beverage">Food and beverage</MenuItem>
+              <MenuItem value="Groceries">Groceries</MenuItem>
+              <MenuItem value="Books">Books</MenuItem>
+              <MenuItem value="Electronics">Electronics</MenuItem>
+              <MenuItem value="Furniture">Furniture</MenuItem>
+              <MenuItem value="Jewellery">Jewellery</MenuItem>
+            </Select>
+          </div>
+
+          <div className="my-3">
+            <div className="mb-1 text-sm">Enter price</div>
             <TextField
               size="small"
               className="mb-3 w-full"
               name="price"
               type="text"
               id="price"
-              label="Price"
               variant="outlined"
               value={product.price}
-              onChange={handleChangeProduct}
+              onChange={handleChangeProductData}
             />
           </div>
 
-          <div>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleAddProduct}>
-              {editProductData.productId ? "Edit" : "Add"}
+          <div className="mt-10">
+            <Button variant="contained" onClick={handleClose}>
+              Cancel
             </Button>
+            <span className="ml-2">
+              <Button variant="contained" onClick={handleAddProduct}>
+                {editProductData.productId ? "Edit" : "Add"}
+              </Button>
+            </span>
           </div>
         </Box>
       </Modal>

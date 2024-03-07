@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -53,7 +53,7 @@ function Layout(props) {
     {
       displayName: "Analytics",
       callback: () => {
-        navigate("/analytics");
+        navigate("/seller/analytics");
       },
       icon: <AnalyticsIcon />,
     },
@@ -64,13 +64,13 @@ function Layout(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
-  const [menu, setMenu] = React.useState([]);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [menu, setMenu] = useState([]);
 
   const userInfo = useSelector((state) => state.userInfo.userInfo);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userInfo.role === "customer") {
       setMenu(customerMenus);
     } else {
@@ -100,7 +100,7 @@ function Layout(props) {
 
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar>GVM Tech</Toolbar>
       <Divider />
       <List>
         {menu.map((menu) => (

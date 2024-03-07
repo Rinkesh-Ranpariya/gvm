@@ -1,3 +1,5 @@
+import { MenuItem, Select, TextField } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -5,8 +7,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../store/usersManagement/usersManagementSlice";
 import useCheckAuth from "../customHooks/useCheckAuth";
 import Loading from "./common/Loading";
-import { toastHandler } from "./common/toast";
-import { MenuItem, Select, TextField } from "@mui/material";
+import { toastHandler } from "../utils/toast";
 
 const Signup = () => {
   const isLoading = useCheckAuth();
@@ -35,7 +36,9 @@ const Signup = () => {
         password: yup.string().required("password is required"),
       }),
       onSubmit: (values) => {
-        const { payload: isUserAdded } = dispatch(addUser(values));
+        const { payload: isUserAdded } = dispatch(
+          addUser({ ...values, userId: `userId-${uuidv4()}` })
+        );
         if (isUserAdded) {
           toastHandler(
             "Thanks for signing up. Your account has been created.",
@@ -61,7 +64,7 @@ const Signup = () => {
         <div className="max-[768px]:hidden flex-1 bg-[#FFFEF9]"></div>
       </div>
 
-      <div className="relative bg-white rounded-3xl p-9 max-[426px]:px-5 max-[426px]:py-10 mx-5 max-w-md w-full shadow-lg">
+      <div className="relative bg-white rounded-3xl p-9 max-[426px]:px-5 max-[426px]:py-10 mx-5 max-w-lg w-full shadow-lg">
         <div className="flex justify-between">
           <div>Welcome to lorem</div>
           <div className="text-sm">

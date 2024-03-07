@@ -4,15 +4,17 @@ import Layout from "./Layout";
 
 const RequireCustomerAuth = ({ children }) => {
   const location = useLocation();
-  const userInfo = useSelector((state) => state.userInfo.userInfo);
+  const isAuthenticated = useSelector(
+    (state) => state.userInfo.isAuthenticated
+  );
   const token = localStorage.getItem("userToken");
 
-  if (userInfo.role !== "customer" || !token) {
+  if (!isAuthenticated || !token) {
     return (
       <Navigate
         to="/login"
         replace={true}
-        state={{ currentPath: location.pathname, role: "customer" }}
+        state={{ currentPath: location.pathname }}
       />
     );
   }

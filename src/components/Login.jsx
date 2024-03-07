@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/user/userSlice";
 import useCheckAuth from "../customHooks/useCheckAuth";
-import { toastHandler } from "./common/toast";
+import { toastHandler } from "../utils/toast";
 import Loading from "./common/Loading";
 import { TextField } from "@mui/material";
 
@@ -52,7 +52,7 @@ const Login = () => {
         <div className="max-[768px]:hidden flex-1 bg-[#FFFEF9]"></div>
       </div>
 
-      <div className="relative bg-white rounded-3xl p-9 max-[426px]:px-5 max-[426px]:py-10 mx-5 max-w-md w-full shadow-lg">
+      <div className="relative bg-white rounded-3xl p-9 max-[426px]:px-5 max-[426px]:py-10 mx-5 max-w-lg w-full shadow-lg">
         <div className="flex justify-between">
           <div>Welcome to lorem</div>
           <div className="text-sm">

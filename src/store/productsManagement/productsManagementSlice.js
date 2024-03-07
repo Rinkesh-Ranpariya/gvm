@@ -5,43 +5,65 @@ const storedProducts = localStorage.getItem("AppProducts");
 const initialState = {
   allProducts: storedProducts ? JSON.parse(storedProducts) : [],
   userProducts: [],
+  filteredProducts: storedProducts ? JSON.parse(storedProducts) : [],
 };
 
 export const productsManagementSlice = createSlice({
   name: "products management",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
-      const newProductList = [...state.allProducts, action.payload];
-      state.allProducts = newProductList;
-      localStorage.setItem("AppProducts", JSON.stringify(newProductList));
+    filterProducts: (state, { payload }) => {
+      const products = state.allProducts.filter((prod) => {
+        const { name, desc, price, category } = prod;
+
+        if (!payload.searchText && payload.category === "All") {
+          return true;
+        }
+        if (
+          [name, desc, price].find((ele) => ele.includes(payload.searchText)) &&
+          (payload.category === "All" || category === payload.category)
+        ) {
+          return true;
+        }
+      });
+      state.filteredProducts = products;
     },
-    getProductsByUser: (state) => {
-      const id = localStorage.getItem("userToken");
-      const products = state.allProducts.filter((prod) => prod.userId === id);
+    addProduct: (state, action) => {
+      const products = [...state.allProducts, action.payload];
+      state.allProducts = products;
+      localStorage.setItem("AppProducts", JSON.stringify(products));
+    },
+    getProductsBySellerId: (state, { payload }) => {
+      const products = state.allProducts.filter(
+        (prod) => prod.userId === payload
+      );
       state.userProducts = products;
     },
     deleteProduct: (state, action) => {
-      console.log();
       const products = state.allProducts.filter(
         (prod) => prod.productId !== action.payload
       );
-      localStorage.setItem("AppProducts", JSON.stringify(products));
       state.allProducts = products;
+      localStorage.setItem("AppProducts", JSON.stringify(products));
     },
     editProduct: (state, action) => {
-      const newProductList = state.allProducts.map((prod) => {
+      const products = state.allProducts.map((prod) => {
         if (prod.productId === action.payload.productId) {
           return { ...action.payload };
         }
         return prod;
       });
-      state.allProducts = newProductList;
-      localStorage.setItem("AppProducts", JSON.stringify(newProductList));
+      state.allProducts = products;
+      localStorage.setItem("AppProducts", JSON.stringify(products));
     },
   },
 });
 
-export const { addProduct, getProductsByUser, deleteProduct, editProduct } =
-  productsManagementSlice.actions;
+export const {
+  addProduct,
+  filterProducts,
+  getProductsBySellerId,
+  deleteProduct,
+  editProduct,
+} = productsManagementSlice.actions;
 export default productsManagementSlice.reducer;
