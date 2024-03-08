@@ -39,6 +39,13 @@ export const productsManagementSlice = createSlice({
       );
       state.userProducts = products;
     },
+    getProductsByProductIds: (state, action) => {
+      const { payload } = action;
+      const products = state.allProducts.filter((prod) =>
+        payload.includes(prod.productId)
+      );
+      action.payload = JSON.parse(JSON.stringify(products));
+    },
     deleteProduct: (state, action) => {
       const products = state.allProducts.filter(
         (prod) => prod.productId !== action.payload
@@ -65,5 +72,6 @@ export const {
   getProductsBySellerId,
   deleteProduct,
   editProduct,
+  getProductsByProductIds,
 } = productsManagementSlice.actions;
 export default productsManagementSlice.reducer;

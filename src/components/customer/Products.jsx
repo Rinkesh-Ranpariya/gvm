@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -7,6 +8,9 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { Grid, MenuItem, Select, TextField } from "@mui/material";
 import { filterProducts } from "../../store/productsManagement/productsManagementSlice";
+import { addToCart } from "../../store/usersManagement/usersManagementSlice";
+import { userCart } from "../../store/user/userSlice";
+import { toastHandler } from "../../utils/toast";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -17,6 +21,14 @@ const Products = () => {
   const products = useSelector(
     (state) => state.productsManagement.filteredProducts
   );
+  const allProducts = useSelector(
+    (state) => state.productsManagement.allProducts
+  );
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
+
+  useEffect(() => {
+    dispatch(filterProducts({ searchText, category }));
+  }, [allProducts]);
 
   const handleSearchText = (e) => {
     setSearchText(e.target.value);
@@ -26,6 +38,12 @@ const Products = () => {
   const handleChangecategory = (e) => {
     setCategory(e.target.value);
     dispatch(filterProducts({ category: e.target.value, searchText }));
+  };
+
+  const handleAddToCart = (productId) => {
+    dispatch(addToCart({ userId: userInfo.userId, productId }));
+    dispatch(userCart(productId));
+    toastHandler("Product added in cart!", "success");
   };
 
   return (
@@ -69,7 +87,7 @@ const Products = () => {
 
       <div className="mt-14">
         <Grid container spacing={2}>
-          {!!products.length &&
+          {!!products?.length &&
             products.map((prod) => (
               <Grid item xs={12} md={3}>
                 <Card className="m-3">
@@ -88,7 +106,11 @@ const Products = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button variant="contained" size="small">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => handleAddToCart(prod.productId)}
+                    >
                       Add to Cart
                     </Button>
                     <Button variant="contained" size="small">
@@ -99,7 +121,7 @@ const Products = () => {
               </Grid>
             ))}
         </Grid>
-        {!products.length && <>No products found!</>}
+        {!products?.length && <>No products found!</>}
       </div>
     </div>
   );

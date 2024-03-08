@@ -36,7 +36,7 @@ const BaseTable = ({ columns, data, id }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rowData.length ? (
+            {rowData?.length ? (
               rowData.map((item, rowIndex) => (
                 <FixedRow
                   key={`${item.id}-${rowIndex}`}
@@ -46,7 +46,7 @@ const BaseTable = ({ columns, data, id }) => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="!text-center">
+                <TableCell colSpan={columns?.length} className="!text-center">
                   No Data Available !
                 </TableCell>
               </TableRow>

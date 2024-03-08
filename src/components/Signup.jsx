@@ -36,6 +36,9 @@ const Signup = () => {
         password: yup.string().required("password is required"),
       }),
       onSubmit: (values) => {
+        if (values.role === "customer") {
+          values.cart = [];
+        }
         const { payload: isUserAdded } = dispatch(
           addUser({ ...values, userId: `userId-${uuidv4()}` })
         );

@@ -15,9 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../store/user/userSlice";
-import { Button } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import CategoryIcon from "@mui/icons-material/Category";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
@@ -25,44 +25,11 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 const drawerWidth = 240;
 
 function Layout(props) {
-  const customerMenus = [
-    {
-      displayName: "Products",
-      callback: () => {
-        navigate("/");
-      },
-      icon: <CategoryIcon />,
-    },
-    {
-      displayName: "Cart",
-      callback: () => {
-        navigate("/cart");
-      },
-      icon: <ShoppingCartIcon />,
-    },
-  ];
-
-  const sellerMenus = [
-    {
-      displayName: "Products",
-      callback: () => {
-        navigate("/seller/products");
-      },
-      icon: <CategoryIcon />,
-    },
-    {
-      displayName: "Analytics",
-      callback: () => {
-        navigate("/seller/analytics");
-      },
-      icon: <AnalyticsIcon />,
-    },
-  ];
-
   const { window, children } = props;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -98,6 +65,48 @@ function Layout(props) {
     navigate("/login");
   };
 
+  const customerMenus = [
+    {
+      displayName: "Products",
+      path: "/",
+      callback: () => {
+        navigate("/");
+      },
+      icon: <CategoryIcon />,
+    },
+    {
+      displayName: "Cart",
+      path: "/cart",
+      callback: () => {
+        navigate("/cart");
+      },
+      icon: (
+        <Badge badgeContent={userInfo.cart?.length} color="error">
+          <ShoppingCartIcon />
+        </Badge>
+      ),
+    },
+  ];
+
+  const sellerMenus = [
+    {
+      displayName: "Products",
+      path: "/seller/products",
+      callback: () => {
+        navigate("/seller/products");
+      },
+      icon: <CategoryIcon />,
+    },
+    {
+      displayName: "Analytics",
+      path: "/seller/analytics",
+      callback: () => {
+        navigate("/seller/analytics");
+      },
+      icon: <AnalyticsIcon />,
+    },
+  ];
+
   const drawer = (
     <div>
       <Toolbar>GVM Tech</Toolbar>
@@ -108,6 +117,8 @@ function Layout(props) {
             key={menu.displayName}
             disablePadding
             onClick={menu.callback}
+            className={`${location.pathname === menu.path ? "bg-slate-300" : ""
+              }`}
           >
             <ListItemButton>
               <ListItemIcon>{menu.icon}</ListItemIcon>

@@ -10,6 +10,16 @@ export const usersManagementSlice = createSlice({
   name: "users management",
   initialState,
   reducers: {
+    addToCart: (state, action) => {
+      const newUserList = state.allUsers.map((user) => {
+        if (user.userId === action.payload.userId) {
+          return { ...user, cart: [...user?.cart, action.payload.productId] };
+        }
+        return user;
+      });
+      state.allUsers = newUserList;
+      localStorage.setItem("AppUsers", JSON.stringify(newUserList));
+    },
     addUser: (state, action) => {
       const isUserExist = state.allUsers.find(
         (user) => user.email === action.payload.email
@@ -26,5 +36,5 @@ export const usersManagementSlice = createSlice({
   },
 });
 
-export const { addUser } = usersManagementSlice.actions;
+export const { addToCart, addUser } = usersManagementSlice.actions;
 export default usersManagementSlice.reducer;

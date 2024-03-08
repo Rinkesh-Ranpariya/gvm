@@ -9,6 +9,7 @@ const initialState = {
     password: "",
     role: "",
     userId: "",
+    cart: [],
   },
 };
 
@@ -16,6 +17,12 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    userCart: (state, { payload }) => {
+      state.userInfo.cart.push(payload);
+    },
+    removeCartItemById: (state, { payload }) => {
+      state.userInfo.cart = state.userInfo.cart.filter((id) => id !== payload);
+    },
     login: (state, action) => {
       const { values, allUsers } = action.payload;
       const userData = allUsers.find((user) => user.email === values.email);
@@ -48,5 +55,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, loginWithToken, logout } = userSlice.actions;
+export const { userCart, removeCartItemById, login, loginWithToken, logout } =
+  userSlice.actions;
 export default userSlice.reducer;
