@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { loginWithToken } from "./store/user/userSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [router, setRouter] = useState(commonRoutes);
 
@@ -17,6 +18,8 @@ function App() {
     const token = localStorage.getItem("userToken");
     if (token) {
       dispatch(loginWithToken({ token, allUsers }));
+    } else {
+      navigate("/login");
     }
   }, []);
 
@@ -30,7 +33,11 @@ function App() {
 
   return (
     <div>
-      <RouterProvider router={createBrowserRouter(router)} />
+      <Routes>
+        {router.map(route => {
+          return <Route exact path={route.path} element={route.element} />
+        })}
+      </Routes>
       <ToastContainer
         position="top-right"
         autoClose={3000}
