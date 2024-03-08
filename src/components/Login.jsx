@@ -29,7 +29,7 @@ const Login = () => {
         const { payload: userData } = dispatch(login({ values, allUsers }));
         if (userData.email) {
           if (userData.role === "customer") {
-            navigate("/");
+            navigate("/products");
           } else {
             navigate("/seller/products");
           }

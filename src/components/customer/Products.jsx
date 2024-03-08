@@ -89,7 +89,7 @@ const Products = () => {
         <Grid container spacing={2}>
           {!!products?.length &&
             products.map((prod) => (
-              <Grid item xs={12} md={3}>
+              <Grid key={prod.productId} item xs={12} md={3}>
                 <Card className="m-3">
                   <div className="h-60">
                     <img src={prod.img} className="w-full h-full" />

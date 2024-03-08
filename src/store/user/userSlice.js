@@ -41,7 +41,7 @@ export const userSlice = createSlice({
       if (userData) {
         state.isAuthenticated = true;
         state.userInfo = userData;
-        action.payload = true;
+        action.payload = JSON.parse(JSON.stringify(userData));
       } else {
         state = initialState;
         localStorage.removeItem("userToken");

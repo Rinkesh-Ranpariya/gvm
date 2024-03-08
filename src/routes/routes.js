@@ -7,8 +7,13 @@ import SellerProducts from "../components/seller/SellerProducts";
 import Signup from "../components/Signup";
 import RequireCustomerAuth from "../components/common/RequireCustomerAuth";
 import RequireSellerAuth from "../components/common/RequireSellerAuth";
+import Home from "../components/Home";
 
 export const commonRoutes = [
+  {
+    path: "/",
+    element: <Home />,
+  },
   {
     path: "/login",
     element: <Login />,
@@ -25,7 +30,7 @@ export const commonRoutes = [
 
 export const customerRoutes = [
   {
-    path: "/",
+    path: "/products",
     element: (
       <RequireCustomerAuth>
         <Products />

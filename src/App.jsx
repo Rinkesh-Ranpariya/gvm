@@ -34,8 +34,15 @@ function App() {
   return (
     <div>
       <Routes>
-        {router.map(route => {
-          return <Route exact path={route.path} element={route.element} />
+        {router.map((route) => {
+          return (
+            <Route
+              key={route.path}
+              exact
+              path={route.path}
+              element={route.element}
+            />
+          );
         })}
       </Routes>
       <ToastContainer

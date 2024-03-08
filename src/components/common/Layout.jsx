@@ -68,9 +68,9 @@ function Layout(props) {
   const customerMenus = [
     {
       displayName: "Products",
-      path: "/",
+      path: "/products",
       callback: () => {
-        navigate("/");
+        navigate("/products");
       },
       icon: <CategoryIcon />,
     },
@@ -117,8 +117,9 @@ function Layout(props) {
             key={menu.displayName}
             disablePadding
             onClick={menu.callback}
-            className={`${location.pathname === menu.path ? "bg-slate-300" : ""
-              }`}
+            className={`${
+              location.pathname === menu.path ? "bg-slate-300" : ""
+            }`}
           >
             <ListItemButton>
               <ListItemIcon>{menu.icon}</ListItemIcon>

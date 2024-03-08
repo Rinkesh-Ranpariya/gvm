@@ -17,18 +17,21 @@ const useCheckAuth = () => {
   useEffect(() => {
     const token = localStorage.getItem("userToken");
     if (token) {
-      const { payload: isUserExist } = dispatch(
+      const { payload: userData } = dispatch(
         loginWithToken({ token, allUsers })
       );
-
-      if (isUserExist) {
+      if (userData.role) {
         if (
           location.state?.currentPath &&
           !["login", "register"].includes(location.state?.currentPath)
         ) {
           navigate(location.state?.currentPath);
         } else {
-          navigate("/");
+          if (userData.role === "customer") {
+            navigate("/products");
+          } else {
+            navigate("/seller/products");
+          }
         }
       }
     }
