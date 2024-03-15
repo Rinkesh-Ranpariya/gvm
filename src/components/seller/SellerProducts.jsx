@@ -47,6 +47,9 @@ const SellerProducts = () => {
     { title: "Desc", field: "desc" },
     { title: "Price", field: "price" },
     { title: "Category", field: "category" },
+    { title: "Brand", field: "brand" },
+    { title: "Discount %", field: "discountPercentage" },
+    { title: "Rating", field: "rating" },
     {
       title: "Action",
       renderCell: (item) => (
