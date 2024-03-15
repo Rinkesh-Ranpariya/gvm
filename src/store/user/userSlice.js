@@ -17,11 +17,20 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userCart: (state, { payload }) => {
-      state.userInfo.cart.push(payload);
+    userCart: (state) => {
+      const appUsers = JSON.parse(localStorage.getItem("AppUsers"));
+      const user = appUsers.find(
+        (user) => user.userId === state.userInfo.userId
+      );
+      state.userInfo = user;
     },
-    removeCartItemById: (state, { payload }) => {
-      state.userInfo.cart = state.userInfo.cart.filter((id) => id !== payload);
+    clearUserCart: (state) => {
+      state.userInfo.cart = [];
+    },
+    removeCartItemByIdFromUser: (state, { payload }) => {
+      state.userInfo.cart = state.userInfo.cart.filter(
+        (item) => item.productId !== payload
+      );
     },
     login: (state, action) => {
       const { values, allUsers } = action.payload;
@@ -55,6 +64,12 @@ export const userSlice = createSlice({
   },
 });
 
-export const { userCart, removeCartItemById, login, loginWithToken, logout } =
-  userSlice.actions;
+export const {
+  userCart,
+  removeCartItemByIdFromUser,
+  login,
+  loginWithToken,
+  logout,
+  clearUserCart,
+} = userSlice.actions;
 export default userSlice.reducer;

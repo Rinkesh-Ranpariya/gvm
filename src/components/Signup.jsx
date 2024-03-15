@@ -38,6 +38,8 @@ const Signup = () => {
       onSubmit: (values) => {
         if (values.role === "customer") {
           values.cart = [];
+        } else {
+          values.analytics = [];
         }
         const { payload: isUserAdded } = dispatch(
           addUser({ ...values, userId: `userId-${uuidv4()}` })

@@ -8,6 +8,8 @@ import Signup from "../components/Signup";
 import RequireCustomerAuth from "../components/common/RequireCustomerAuth";
 import RequireSellerAuth from "../components/common/RequireSellerAuth";
 import Home from "../components/Home";
+import Payment from "../components/customer/Payment";
+import ViewProduct from "../components/customer/ViewProduct";
 
 export const commonRoutes = [
   {
@@ -38,10 +40,26 @@ export const customerRoutes = [
     ),
   },
   {
+    path: "/product/:productId",
+    element: (
+      <RequireCustomerAuth>
+        <ViewProduct />
+      </RequireCustomerAuth>
+    ),
+  },
+  {
     path: "/cart",
     element: (
       <RequireCustomerAuth>
         <Cart />
+      </RequireCustomerAuth>
+    ),
+  },
+  {
+    path: "/payment",
+    element: (
+      <RequireCustomerAuth>
+        <Payment />
       </RequireCustomerAuth>
     ),
   },

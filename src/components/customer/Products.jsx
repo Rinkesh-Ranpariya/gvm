@@ -11,9 +11,11 @@ import { filterProducts } from "../../store/productsManagement/productsManagemen
 import { addToCart } from "../../store/usersManagement/usersManagementSlice";
 import { userCart } from "../../store/user/userSlice";
 import { toastHandler } from "../../utils/toast";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("All");
@@ -42,7 +44,7 @@ const Products = () => {
 
   const handleAddToCart = (productId) => {
     dispatch(addToCart({ userId: userInfo.userId, productId }));
-    dispatch(userCart(productId));
+    dispatch(userCart());
     toastHandler("Product added in cart!", "success");
   };
 
@@ -92,7 +94,11 @@ const Products = () => {
               <Grid key={prod.productId} item xs={12} md={3}>
                 <Card className="m-3">
                   <div className="h-60">
-                    <img src={prod.img} className="w-full h-full" />
+                    <img
+                      src={prod.img}
+                      alt="productImage"
+                      className="w-full h-full"
+                    />
                   </div>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
@@ -113,7 +119,11 @@ const Products = () => {
                     >
                       Add to Cart
                     </Button>
-                    <Button variant="contained" size="small">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => navigate(`/product/${prod.productId}`)}
+                    >
                       View
                     </Button>
                   </CardActions>

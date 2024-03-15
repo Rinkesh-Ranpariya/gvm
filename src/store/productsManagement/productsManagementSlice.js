@@ -41,10 +41,19 @@ export const productsManagementSlice = createSlice({
     },
     getProductsByProductIds: (state, action) => {
       const { payload } = action;
-      const products = state.allProducts.filter((prod) =>
-        payload.includes(prod.productId)
-      );
-      action.payload = JSON.parse(JSON.stringify(products));
+      const ids = payload.map((item) => item.productId);
+      const products = state.allProducts.filter((prod) => {
+        const isExist = ids.includes(prod.productId);
+        return isExist;
+      });
+      const newProduct = products.map((prod) => {
+        return {
+          ...prod,
+          count: payload.find((item) => item.productId === prod.productId)
+            .count,
+        };
+      });
+      action.payload = JSON.parse(JSON.stringify(newProduct));
     },
     deleteProduct: (state, action) => {
       const products = state.allProducts.filter(
@@ -63,6 +72,13 @@ export const productsManagementSlice = createSlice({
       state.allProducts = products;
       localStorage.setItem("AppProducts", JSON.stringify(products));
     },
+    getProductById: (state, action) => {
+      const productInfo = state.allProducts.find(
+        (prod) => prod.productId === action.payload
+      );
+
+      action.payload = JSON.parse(JSON.stringify(productInfo));
+    },
   },
 });
 
@@ -73,5 +89,6 @@ export const {
   deleteProduct,
   editProduct,
   getProductsByProductIds,
+  getProductById,
 } = productsManagementSlice.actions;
 export default productsManagementSlice.reducer;

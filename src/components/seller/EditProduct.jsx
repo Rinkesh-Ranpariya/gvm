@@ -33,6 +33,9 @@ const EditProduct = ({ handleClose, editProductData }) => {
     desc: "",
     price: 0,
     category: "",
+    brand: "",
+    discountPercentage: 0,
+    rating: 4,
     userId: userInfo.userId,
     productId: `productId-${uuidv4()}`,
   });
@@ -69,81 +72,125 @@ const EditProduct = ({ handleClose, editProductData }) => {
             {editProductData.productId ? "Edit Product" : "Add Product"}
           </Typography>
 
-          <div className="my-4">
-            <div className="mb-1 text-sm">Enter name</div>
-            <TextField
-              size="small"
-              className="mb-3 w-full"
-              name="name"
-              type="text"
-              id="name"
-              variant="outlined"
-              onChange={handleChangeProductData}
-              value={product.name}
-            />
-          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="my-4">
+              <div className="mb-1 text-sm">Enter name</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="name"
+                type="text"
+                id="name"
+                variant="outlined"
+                onChange={handleChangeProductData}
+                value={product.name}
+              />
+            </div>
 
-          <div className="my-3">
-            <div className="mb-1 text-sm">Enter image url</div>
-            <TextField
-              size="small"
-              className="mb-3 w-full"
-              name="img"
-              type="text"
-              id="img"
-              variant="outlined"
-              value={product.img}
-              onChange={handleChangeProductData}
-            />
-          </div>
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter image url</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="img"
+                type="text"
+                id="img"
+                variant="outlined"
+                value={product.img}
+                onChange={handleChangeProductData}
+              />
+            </div>
 
-          <div className="my-3">
-            <div className="mb-1 text-sm">Enter description</div>
-            <TextField
-              size="small"
-              className="mb-3 w-full"
-              name="desc"
-              type="text"
-              id="desc"
-              variant="outlined"
-              value={product.desc}
-              onChange={handleChangeProductData}
-            />
-          </div>
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter description</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="desc"
+                type="text"
+                id="desc"
+                variant="outlined"
+                value={product.desc}
+                onChange={handleChangeProductData}
+              />
+            </div>
 
-          <div className="my-3">
-            <div className="mb-1 text-sm">Enter category</div>
-            <Select
-              size="small"
-              className="mb-3 w-full"
-              id="category"
-              name="category"
-              variant="outlined"
-              value={product.category}
-              onChange={handleChangeProductData}
-            >
-              <MenuItem value="Fashion">Fashion</MenuItem>
-              <MenuItem value="Food and beverage">Food and beverage</MenuItem>
-              <MenuItem value="Groceries">Groceries</MenuItem>
-              <MenuItem value="Books">Books</MenuItem>
-              <MenuItem value="Electronics">Electronics</MenuItem>
-              <MenuItem value="Furniture">Furniture</MenuItem>
-              <MenuItem value="Jewellery">Jewellery</MenuItem>
-            </Select>
-          </div>
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter category</div>
+              <Select
+                size="small"
+                className="mb-3 w-full"
+                id="category"
+                name="category"
+                variant="outlined"
+                value={product.category}
+                onChange={handleChangeProductData}
+              >
+                <MenuItem value="Fashion">Fashion</MenuItem>
+                <MenuItem value="Food and beverage">Food and beverage</MenuItem>
+                <MenuItem value="Groceries">Groceries</MenuItem>
+                <MenuItem value="Books">Books</MenuItem>
+                <MenuItem value="Electronics">Electronics</MenuItem>
+                <MenuItem value="Furniture">Furniture</MenuItem>
+                <MenuItem value="Jewellery">Jewellery</MenuItem>
+              </Select>
+            </div>
 
-          <div className="my-3">
-            <div className="mb-1 text-sm">Enter price</div>
-            <TextField
-              size="small"
-              className="mb-3 w-full"
-              name="price"
-              type="text"
-              id="price"
-              variant="outlined"
-              value={product.price}
-              onChange={handleChangeProductData}
-            />
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter price</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="price"
+                type="number"
+                id="price"
+                variant="outlined"
+                value={product.price}
+                onChange={handleChangeProductData}
+              />
+            </div>
+
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter brand</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="brand"
+                type="text"
+                id="brand"
+                variant="outlined"
+                value={product.brand}
+                onChange={handleChangeProductData}
+              />
+            </div>
+
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter discount %</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="discountPercentage"
+                type="number"
+                id="discountPercentage"
+                variant="outlined"
+                value={product.discountPercentage}
+                onChange={handleChangeProductData}
+              />
+            </div>
+
+            <div className="my-3">
+              <div className="mb-1 text-sm">Enter rating</div>
+              <TextField
+                size="small"
+                className="mb-3 w-full"
+                name="rating"
+                type="number"
+                id="rating"
+                variant="outlined"
+                value={product.rating}
+                onChange={handleChangeProductData}
+              />
+            </div>
           </div>
 
           <div className="mt-10">
